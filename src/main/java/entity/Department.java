@@ -32,4 +32,23 @@ public class Department {
         return name;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(@NotNull String name) {
+        this.name = name;
+    }
+
+    public Collection<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Collection<Employee> employees) {
+        this.employees = employees;
+    }
 }

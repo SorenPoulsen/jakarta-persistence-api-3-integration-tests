@@ -26,4 +26,39 @@ public class Project {
      */
     @ManyToMany(mappedBy = "projects")
     Collection<Employee> employees;
+
+    public Project() {}
+
+    public Project(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public @NotNull String getName() {
+        return name;
+    }
+
+//    public void setName(@NotNull String name) {
+//        this.name = name;
+//    }
+
+    public Collection<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Collection<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public String toString() {
+        return "Project [id=" + id + ", name=" + name + ", employees=" + employees + "]";
+    }
 }

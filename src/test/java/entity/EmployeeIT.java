@@ -38,6 +38,15 @@ public class EmployeeIT {
     }
 
     @Test
+    public void testEmployeeByIdQuery() {
+        TypedQuery<Employee> query = em.createQuery("select e from Employee e where e.id = :id",
+                Employee.class).setParameter("id", 3);
+        Employee employee = query.getSingleResult();
+        assertNotNull(employee);
+        assertEquals("Mr Foxy Weasel", employee.getName());
+    }
+
+    @Test
     void testEmployeeByName() {
         TypedQuery<Employee> employee = em.createQuery("select e from Employee e where e.name = 'Cruse Dwayne'", Employee.class);
         List<Employee> resultList = employee.getResultList();

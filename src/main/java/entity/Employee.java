@@ -50,4 +50,32 @@ public class Employee {
     public String getName() {
         return name;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(@NotNull String name) {
+        this.name = name;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public Collection<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(Collection<Project> projects) {
+        this.projects = projects;
+    }
 }
