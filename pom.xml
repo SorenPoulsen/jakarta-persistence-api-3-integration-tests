@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <description>
-        Project to demonstrate how to run Java Persistence API 3 integration tests
+        Project to demonstrate how to run Jakarta Persistence API 3 integration tests
         with Hibernate, Apache Derby and Maven's Failsafe plugin.
     </description>
 
