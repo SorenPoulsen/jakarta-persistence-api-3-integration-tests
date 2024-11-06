@@ -9,6 +9,13 @@ import java.util.Collection;
  * @author Søren Thalbitzer Poulsen
  */
 @Entity
+/*
+ * Named queries are more efficient than dynamic queries, because they can be compiled to sql once and cached.
+ * Typically, they are stored in the entity associated with their return type.
+ */
+@NamedQueries({
+        @NamedQuery(name = "Employee.findIdByName", query = "select e.id from Employee e where e.name = :name")
+})
 public class Employee {
 
     @Id

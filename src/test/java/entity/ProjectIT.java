@@ -104,6 +104,11 @@ public class ProjectIT {
                     Project.class).setParameter("id", 3);
             List<Project> projects = query.getResultList();
         } catch (Exception e) {
+
+            /*
+             * ManyToMany relation "p.employees" has no identifying root and cannot be used in where-clause.
+             */
+
             assertTrue(true);
         }
     }
