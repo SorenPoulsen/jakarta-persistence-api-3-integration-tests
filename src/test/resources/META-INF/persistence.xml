@@ -3,14 +3,18 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
-
-    <!-- Use entity manager transactions instead of JTA when running outside application server -->
+    <!-- Use resource local (database connection specific) transactions when running JPA in a strand-alone JavaSE
+    application (not JakartaEE server with container managed transactions) -->
     <persistence-unit name="testunit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <!-- Entity classes must be listed explicitly when running in stand-alone JavaSE application, there's no
+        server to automatically scan for entities.-->
         <class>entity.Employee</class>
         <class>entity.Project</class>
         <class>entity.Department</class>
         <properties>
+            <!-- Specify the database connection explicitly (rather than a JNDI resource) when running JPA in a
+            stand-alone JavaSE application. -->
             <property name="hibernate.connection.username" value="${derby.sa.username}"/>
             <property name="hibernate.connection.password" value="${derby.sa.password}"/>
             <property name="hibernate.connection.url" value="jdbc:derby:memory:${derby.databasename};create=true"/>

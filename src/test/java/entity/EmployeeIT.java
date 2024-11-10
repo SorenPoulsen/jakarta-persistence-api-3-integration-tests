@@ -1,9 +1,6 @@
 package entity;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -11,8 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Søren Thalbitzer Poulsen
@@ -217,6 +213,90 @@ public class EmployeeIT {
         List<Employee> resultList = typedQuery.getResultList();
         assertNotNull(resultList);
         assertEquals(2, resultList.size());
+    }
+
+    @Test
+    public void testPersistEmployeeNoTransaction() {
+        Employee emp = new Employee("Celina Lyle");
+
+        /*
+         * We are running a standalone JavaSE application, thus there are no container-managed transactions, and if we
+         * don't set up an explicit "resource local" transaction either, then the entity change is not persisted.
+         */
+
+        try {
+            em.persist(emp);
+            Object persistedEmp = em.createQuery("select e from Employee e where e.name = 'Celina Lyle'").getSingleResult();
+        }
+        catch (NoResultException e) {
+            assertTrue(true);
+        }
+        finally {
+            em.remove(emp);
+        }
+    }
+
+    @Test
+    public void testPersistEmployeeWithResourceLocalTransaction() {
+
+        /*
+         * To persist new entities or save changes to entities when running in a standalone JavaSE application
+         * with "resource local" transactions, we have to begin and end the transactions explicitly.
+         */
+
+        Employee emp = new Employee("Celina Lyle");
+        Employee reloadedEmp = null;
+        try {
+            em.getTransaction().begin();
+            em.persist(emp);
+            em.getTransaction().commit();
+
+            /*
+             * Test if the entity has been persisted to the database by clearing the entity manager. This will detach
+             * the emp entity, and force the entity manager to reload it on the next query.
+             */
+
+            em.clear();
+            reloadedEmp = em.createQuery("select e from Employee e where e.name = 'Celina Lyle'", Employee.class).getSingleResult();
+            assertNotNull(reloadedEmp);
+        }
+        finally {
+            em.getTransaction().begin();
+            em.remove(reloadedEmp);
+            em.getTransaction().commit();
+        }
+    }
+
+    @Test
+    public void testPersistNewEmployeeWithDepartment() {
+
+        try {
+            em.getTransaction().begin();
+
+            /*
+             * Persist a new Employee in the existing Department 'Dwayne Enterprises R&D'
+             */
+
+            Employee employee = new Employee("Celina Lyle");
+            Department department = em.createQuery("select d from Department d where d.name = 'Dwayne Enterprises R&D'",
+                    Department.class).getSingleResult();
+            employee.setDepartment(department);
+            em.persist(employee);
+
+            /*
+             * Test that the new Employee is in the list of Employees of the Department 'Dwayne Enterprises R&D'.
+             */
+
+            List<Employee> employees = em.createQuery(
+                    "select e from Department d join d.employees e where d.name = 'Dwayne Enterprises R&D'",
+                    Employee.class).getResultList();
+            assertNotNull(employees);
+            assertTrue(employees.contains(employee));
+        }
+        finally {
+            em.getTransaction().rollback();
+        }
+
     }
 
 }
