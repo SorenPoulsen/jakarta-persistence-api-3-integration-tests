@@ -40,10 +40,9 @@ public class DepartmentIT {
         /*
          * Entities can be joined with the join condition in the where-clause.
          */
-        TypedQuery<Department> departmentQuery = em.createQuery(
+        Department department = em.createQuery(
                 "select d from Employee e, Department d where e.department = d and e.name = :name",
-                Department.class).setParameter("name", "Cruse Dwayne");
-        Department department = departmentQuery.getSingleResult();
+                Department.class).setParameter("name", "Cruse Dwayne").getSingleResult();
         assertNotNull(department);
         assertEquals("Dwayne Enterprises Leadership", department.getName());
     }
@@ -54,10 +53,9 @@ public class DepartmentIT {
          * Entities can also be joined with a JOIN and a PATH statement (e.department) from an entity to another
          * associated entity. No explicit join condition is needed.
          */
-        TypedQuery<Department> departmentQuery = em.createQuery(
+        Department department = em.createQuery(
                 "select d from Employee e join e.department d where e.name = :name",
-                Department.class).setParameter("name", "Cruse Dwayne");
-        Department department = departmentQuery.getSingleResult();
+                Department.class).setParameter("name", "Cruse Dwayne").getSingleResult();
         assertNotNull(department);
         assertEquals("Dwayne Enterprises Leadership", department.getName());
     }

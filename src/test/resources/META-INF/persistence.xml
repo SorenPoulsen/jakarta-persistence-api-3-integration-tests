@@ -15,9 +15,7 @@
         <properties>
             <!-- Specify the database connection explicitly (rather than a JNDI resource) when running JPA in a
             stand-alone JavaSE application. -->
-            <property name="hibernate.connection.username" value="${derby.sa.username}"/>
-            <property name="hibernate.connection.password" value="${derby.sa.password}"/>
-            <property name="hibernate.connection.url" value="jdbc:derby:memory:${derby.databasename};create=true"/>
+            <property name="hibernate.connection.url" value="jdbc:derby:memory:testdb;create=true"/>
             <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver"/>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
             <property name="hibernate.show_sql" value="true"/>
