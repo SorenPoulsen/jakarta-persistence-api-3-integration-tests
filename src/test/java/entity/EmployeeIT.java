@@ -3,6 +3,7 @@ package entity;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -26,6 +27,11 @@ public class EmployeeIT {
     @AfterAll
     static void tearDownAfterClass() {
         em.close();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        em.clear();
     }
 
     @Test

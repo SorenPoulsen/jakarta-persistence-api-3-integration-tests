@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +28,11 @@ public class DepartmentIT {
     @AfterAll
     static void tearDownAfterClass() {
         em.close();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        em.clear();
     }
 
     @Test

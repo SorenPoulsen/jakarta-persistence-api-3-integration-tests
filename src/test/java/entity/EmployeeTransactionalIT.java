@@ -38,6 +38,7 @@ public class EmployeeTransactionalIT {
     @AfterEach
     void tearDown() {
         em.getTransaction().rollback();
+        em.clear();
     }
 
     @Test
